@@ -1,4 +1,5 @@
 import "../styles/Home.css";
+import TaskList from "../components/journal/TaskList";
 
 function Home() {
   return (
@@ -35,27 +36,7 @@ function Home() {
           <h1 className="logo">OneLog</h1>
 
           {/* Tasks */}
-          <div className="tasks-section">
-            <div className="section-label">Goals &amp; Time Spent</div>
-
-            <div className="task-row">
-              <input type="checkbox" />
-              <span className="task-name">Complete React Component</span>
-              <span className="task-time">1h 20m</span>
-            </div>
-            <div className="task-row">
-              <input type="checkbox" />
-              <span className="task-name">Solve 2 DSA Problems</span>
-              <span className="task-time">45m</span>
-            </div>
-            <div className="task-row">
-              <input type="checkbox" />
-              <span className="task-name">Read Documentation</span>
-              <span className="task-time">30m</span>
-            </div>
-
-            <button className="add-task-btn">+ Add task</button>
-          </div>
+          <TaskList />
 
           {/* 3 questions in a row */}
           <div className="questions-grid">
@@ -85,7 +66,7 @@ function Home() {
               <div className="footer-field">
                 <label>Energy Level</label>
                 <div className="energy-levels">
-                  {[1,2,3,4,5,6,7,8,9,10].map(n => (
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => (
                     <button key={n} type="button">{n}</button>
                   ))}
                 </div>

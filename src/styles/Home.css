@@ -142,69 +142,60 @@ body {
 
 /* ── TASKS SECTION ──────────────────────────── */
 
-.tasks-section {
-  margin-bottom: 10px;
-  flex-shrink: 0;
+.tasks-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
 }
 
-.section-label {
-  font-size: 1.2rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #7b6a58;
-  margin-bottom: 5px;
+.tasks-grid {
+  display: grid;
+  grid-template-rows: repeat(3, auto);
+  grid-auto-flow: column;
+  gap: 0 40px;
 }
 
 .task-row {
   display: grid;
-  grid-template-columns: 14px 1fr 80px;
+  grid-template-columns: 14px 1fr 70px;
+  gap: 10px;
   align-items: center;
-  gap: 11px;
   padding: 7px 0;
   border-bottom: 1px solid #e8e2da;
 }
 
-.task-row:first-of-type {
-  border-top: 1px solid #e8e2da;
-}
-
-.task-row input[type="checkbox"] {
-  width: 12px;
-  height: 12px;
-  cursor: pointer;
-  accent-color: #2c2c2c;
-  flex-shrink: 0;
-}
-
-.task-row .task-name {
+.task-input,
+.time-input {
+  border: none;
+  background: transparent;
+  font-family: inherit;
   font-size: 0.9rem;
+  outline: none;
+}
+
+.task-input {
   color: #2c2c2c;
 }
 
-.task-row .task-time {
-  font-size: 0.95rem;
+.time-input {
+  text-align: right;
   color: #a0917f;
   font-style: italic;
-  text-align: right;
+  width: 70px;
+}
+
+.task-input:focus,
+.time-input:focus {
+  border-bottom: 1px solid #7b6a58;
 }
 
 .add-task-btn {
   background: transparent;
-  color: #7b6a58;
   border: none;
-  padding: 3px 0;
-  font-size: 0.72rem;
-  font-family: inherit;
+  color: #7b6a58;
   cursor: pointer;
-  letter-spacing: 0.02em;
-  text-align: left;
-  margin-top: 3px;
-}
-
-.add-task-btn:hover {
-  color: #2c2c2c;
-  opacity: 1;
+  font-size: 0.8rem;
 }
 
 /* ── QUESTIONS GRID ─────────────────────────── */
@@ -212,14 +203,14 @@ body {
 .questions-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px 20px;
+  gap: 10px 25px;
   flex-shrink: 0;
   margin-bottom: 10px;
 }
 
 .q-group {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 55px 1fr;
 }
 
 .q-group label {
@@ -264,34 +255,36 @@ body {
 .footer-fields {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 50px;
   flex: 1;
 }
 
 .footer-field {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+  display: grid;
+  grid-template-rows: 24px auto;
+  gap: 8px;
 }
 
 .footer-field label {
-  font-size: 0.6rem;
+  font-size: 0.95rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.09em;
   color: #7b6a58;
+  display: flex;
+  align-items: center;
 }
 
 .footer-field input[type="text"] {
   border: none;
   border-bottom: 1px solid #d8d1c8;
   background: transparent;
-  padding: 2px 0;
-  font-size: 0.8rem;
+  padding: 5px 0;
+  font-size: 0.9rem;
   font-family: inherit;
   color: #2c2c2c;
   outline: none;
-  width: 90px;
+  width: 100px;
 }
 
 .footer-field input[type="text"]:focus {
@@ -301,13 +294,14 @@ body {
 .energy-levels {
   display: flex;
   gap: 3px;
+  align-items: center;
 }
 
 .energy-levels button {
-  width: 22px;
-  height: 22px;
+  width: 30px;
+  height: 30px;
   padding: 0;
-  font-size: 0.68rem;
+  font-size: 0.90rem;
   background: transparent;
   color: #7b6a58;
   border: 1px solid #d8d1c8;
