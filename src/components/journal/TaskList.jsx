@@ -4,13 +4,13 @@ function TaskList() {
   const [tasks, setTasks] = useState([
     {
       id: 1,
-      text: "Complete React Component",
+      text: "Learn Recursions",
       time: "1h 20m",
       completed: false,
     },
     {
       id: 2,
-      text: "Solve 2 DSA Problems",
+      text: "GYM",
       time: "45m",
       completed: false,
     },
@@ -32,6 +32,12 @@ function TaskList() {
         completed: false,
       },
     ]);
+  };
+
+  const removeTask = (id) => {
+    if (tasks.length === 1) return;
+
+    setTasks(tasks.filter((task) => task.id !== id));
   };
 
   const toggleTask = (id) => {
@@ -58,7 +64,7 @@ function TaskList() {
     <div className="tasks-section">
       <div className="tasks-header">
         <div className="section-label">
-          Goals & Time Spent
+          GOALS & TIME SPENT
         </div>
 
         <button
@@ -79,32 +85,36 @@ function TaskList() {
             />
 
             <input
-              className="task-input"
+              className={`task-input ${task.completed ? "completed" : ""
+                }`}
+              type="text"
               type="text"
               value={task.text}
-              placeholder="Enter task"
+              placeholder="New goal..."
               onChange={(e) =>
-                updateTask(
-                  task.id,
-                  "text",
-                  e.target.value
-                )
+                updateTask(task.id, "text", e.target.value)
               }
             />
 
-            <input
-              className="time-input"
-              type="text"
-              value={task.time}
-              placeholder="30m"
-              onChange={(e) =>
-                updateTask(
-                  task.id,
-                  "time",
-                  e.target.value
-                )
-              }
-            />
+            <div className="task-actions">
+              <input
+                className="time-input"
+                type="text"
+                value={task.time}
+                placeholder="30m"
+                onChange={(e) =>
+                  updateTask(task.id, "time", e.target.value)
+                }
+              />
+
+              <button
+                className="delete-task"
+                onClick={() => removeTask(task.id)}
+                type="button"
+              >
+                ×
+              </button>
+            </div>
           </div>
         ))}
       </div>

@@ -147,13 +147,17 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 6px;
+  color: #7b6a58;
+  letter-spacing: 0.09em;
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
 .tasks-grid {
   display: grid;
   grid-template-rows: repeat(3, auto);
   grid-auto-flow: column;
-  gap: 0 40px;
+  gap: 2px 40px;
 }
 
 .task-row {
@@ -196,6 +200,43 @@ body {
   color: #7b6a58;
   cursor: pointer;
   font-size: 0.8rem;
+}
+
+.tasks-section {
+  margin-bottom: 15px;
+  flex-shrink: 0;
+}
+
+.task-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.delete-task {
+  background: transparent;
+  border: none;
+  color: #a0917f;
+  font-size: 1rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  padding: 0;
+  width: 16px;
+}
+
+.task-row:hover .delete-task {
+  opacity: 1;
+}
+
+.delete-task:hover {
+  color: #8b0000;
+}
+
+.task-input.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
 }
 
 /* ── QUESTIONS GRID ─────────────────────────── */
