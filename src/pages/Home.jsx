@@ -6,6 +6,9 @@ import JournalForm from "../components/journal/JournalForm";
 import EnergySelector from "../components/journal/EnergySelector";
 import ScreenTime from "../components/journal/ScreenTime";
 import Reward from "../components/journal/Reward";
+import StreakCard from "../components/dashboard/StreakCard";
+import ConsistencyChart from "../components/dashboard/ConsistencyChart";
+import HoursChart from "../components/dashboard/HoursChart";
 
 function Home() {
   const [screenTime, setScreenTime] = useState("");
@@ -25,30 +28,19 @@ function Home() {
       {/* Dashboard Panel */}
       <div className="dashboard-panel">
         <div className="stat-section">
-          <div className="stat">
-            <h3>Current Streak</h3>
-            <p>17 Days</p>
-          </div>
+          <StreakCard
+            title="Current Streak"
+            value="17 Days"
+          />
 
-          <div className="stat">
-            <h3>Longest Streak</h3>
-            <p>25 Days</p>
-          </div>
+          <StreakCard
+            title="Longest Streak"
+            value="25 Days"
+          />
         </div>
 
-        <div className="graph-card">
-          <h3>Weekly Consistency</h3>
-          <div className="graph-placeholder">
-            Graph — last 7 days
-          </div>
-        </div>
-
-        <div className="graph-card">
-          <h3>Weekly Screen Time</h3>
-          <div className="graph-placeholder">
-            Graph — last 7 days
-          </div>
-        </div>
+        <ConsistencyChart />
+        <HoursChart />
       </div>
 
       {/* Journal Panel */}
