@@ -1,26 +1,7 @@
-import { useState } from "react";
-
-function TaskList() {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      text: "Learn Recursions",
-      time: "1h 20m",
-      completed: false,
-    },
-    {
-      id: 2,
-      text: "GYM",
-      time: "45m",
-      completed: false,
-    },
-    {
-      id: 3,
-      text: "Read Documentation",
-      time: "30m",
-      completed: false,
-    },
-  ]);
+function TaskList({
+  tasks,
+  setTasks,
+}) {
 
   const addTask = () => {
     setTasks([
@@ -87,7 +68,6 @@ function TaskList() {
             <input
               className={`task-input ${task.completed ? "completed" : ""
                 }`}
-              type="text"
               type="text"
               value={task.text}
               placeholder="New goal..."

@@ -23,6 +23,27 @@ function Home() {
 
   const [reward, setReward] = useState("");
 
+  const [tasks, setTasks] = useState([
+    {
+      id: 1,
+      text: "Learn Recursions",
+      time: "1h 20m",
+      completed: false,
+    },
+    {
+      id: 2,
+      text: "GYM",
+      time: "45m",
+      completed: false,
+    },
+    {
+      id: 3,
+      text: "Read Documentation",
+      time: "30m",
+      completed: false,
+    },
+  ]);
+
   return (
     <div className="home">
       {/* Dashboard Panel */}
@@ -48,7 +69,10 @@ function Home() {
         <div className="journal-inner">
           <h1 className="logo">OneLog</h1>
 
-          <TaskList />
+          <TaskList
+            tasks={tasks}
+            setTasks={setTasks}
+          />
 
           <JournalForm
             questions={questions}
