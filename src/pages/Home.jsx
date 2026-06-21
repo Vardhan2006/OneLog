@@ -22,29 +22,44 @@ function Home() {
             .toISOString()
             .split("T")[0],
 
-          meaningful_thing:
-            questions.forward,
-
-          obstacle:
-            questions.obstacle,
-
-          tomorrow_focus:
-            questions.tomorrow,
-
-          distraction_time:
-            screenTime,
-
-          energy_level:
-            energy,
-
-          reward:
-            reward,
+          meaningful_thing: questions.forward,
+          obstacle: questions.obstacle,
+          tomorrow_focus: questions.tomorrow,
+          distraction_time: screenTime,
+          energy_level: energy,
+          reward: reward,
         },
       ])
       .select();
 
-    console.log("DATA:", data);
-    console.log(JSON.stringify(error, null, 2));
+    if (error) {
+      console.log(error);
+      return;
+    }
+
+    const journalId = data[0].id;
+
+    const taskRows = tasks.map((task) => ({
+      journal_id: journalId,
+      task_name: task.text,
+      time_spent: task.time,
+      completed: task.completed,
+    }));
+
+    const {
+      data: taskData,
+      error: taskError,
+    } = await supabase
+      .from("tasks")
+      .insert(taskRows)
+      .select();
+
+    if (taskError) {
+      console.error(taskError);
+      return;
+    }
+
+    alert("Journal and Tasks saved successfully!");
   };
 
   const [screenTime, setScreenTime] = useState("");
