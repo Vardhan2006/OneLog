@@ -1,6 +1,7 @@
 import "../styles/Home.css";
 import { useState } from "react";
 
+import { supabase } from "../services/supabase";
 import TaskList from "../components/journal/TaskList";
 import JournalForm from "../components/journal/JournalForm";
 import EnergySelector from "../components/journal/EnergySelector";
@@ -11,6 +12,41 @@ import ConsistencyChart from "../components/dashboard/ConsistencyChart";
 import HoursChart from "../components/dashboard/HoursChart";
 
 function Home() {
+
+  const handleReview = async () => {
+    const { data, error } = await supabase
+      .from("journals")
+      .insert([
+        {
+          journal_date: new Date()
+            .toISOString()
+            .split("T")[0],
+
+          meaningful_thing:
+            questions.forward,
+
+          obstacle:
+            questions.obstacle,
+
+          tomorrow_focus:
+            questions.tomorrow,
+
+          distraction_time:
+            screenTime,
+
+          energy_level:
+            energy,
+
+          reward:
+            reward,
+        },
+      ])
+      .select();
+
+    console.log("DATA:", data);
+    console.log(JSON.stringify(error, null, 2));
+  };
+
   const [screenTime, setScreenTime] = useState("");
 
   const [energy, setEnergy] = useState(5);
@@ -97,7 +133,10 @@ function Home() {
               />
             </div>
 
-            <button className="review-btn">
+            <button
+              className="review-btn"
+              onClick={handleReview}
+            >
               Get AI Review →
             </button>
           </div>
