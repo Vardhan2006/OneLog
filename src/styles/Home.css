@@ -378,3 +378,23 @@ body {
 .review-btn:hover {
   opacity: 0.8;
 }
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.save-btn {
+  background: transparent;
+  color: #2c2c2c;
+  border: 1px solid #d8d1c8;
+  padding: 8px 20px;
+  font-size: 0.78rem;
+  font-family: inherit;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+}
+
+.save-btn:hover {
+  background: #ede9e2;
+}

@@ -1,5 +1,5 @@
 import "../styles/Home.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { supabase } from "../services/supabase";
 import TaskList from "../components/journal/TaskList";
@@ -13,31 +13,66 @@ import HoursChart from "../components/dashboard/HoursChart";
 
 function Home() {
 
-  const handleReview = async () => {
-    const { data, error } = await supabase
-      .from("journals")
-      .insert([
-        {
-          journal_date: new Date()
-            .toISOString()
-            .split("T")[0],
+  const handleSaveJournal = async () => {
+    const today = new Date()
+      .toISOString()
+      .split("T")[0];
 
+    let journalId = savedJournalId;
+
+    if (!savedJournalId) {
+      const { data, error } = await supabase
+        .from("journals")
+        .insert([
+          {
+            journal_date: today,
+            meaningful_thing: questions.forward,
+            obstacle: questions.obstacle,
+            tomorrow_focus: questions.tomorrow,
+            distraction_time: screenTime,
+            energy_level: energy,
+            reward: reward,
+          },
+        ])
+        .select()
+        .single();
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      journalId = data.id;
+      setSavedJournalId(journalId);
+    } else {
+      const { error } = await supabase
+        .from("journals")
+        .update({
           meaningful_thing: questions.forward,
           obstacle: questions.obstacle,
           tomorrow_focus: questions.tomorrow,
           distraction_time: screenTime,
           energy_level: energy,
           reward: reward,
-        },
-      ])
-      .select();
+        })
+        .eq("id", savedJournalId);
 
-    if (error) {
-      console.log(error);
-      return;
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      const { error: deleteError } =
+        await supabase
+          .from("tasks")
+          .delete()
+          .eq("journal_id", savedJournalId);
+
+      if (deleteError) {
+        console.error(deleteError);
+        return;
+      }
     }
-
-    const journalId = data[0].id;
 
     const taskRows = tasks.map((task) => ({
       journal_id: journalId,
@@ -46,20 +81,78 @@ function Home() {
       completed: task.completed,
     }));
 
-    const {
-      data: taskData,
-      error: taskError,
-    } = await supabase
-      .from("tasks")
-      .insert(taskRows)
-      .select();
+    const { error: taskError } =
+      await supabase
+        .from("tasks")
+        .insert(taskRows);
 
     if (taskError) {
       console.error(taskError);
       return;
     }
 
-    alert("Journal and Tasks saved successfully!");
+    alert("Journal saved!");
+  };
+
+  const loadTodayJournal = async () => {
+    const today = new Date()
+      .toISOString()
+      .split("T")[0];
+
+    const { data, error } = await supabase
+      .from("journals")
+      .select("*")
+      .eq("journal_date", today)
+      .order("id", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (error || !data) return;
+
+    setSavedJournalId(data.id);
+
+    setQuestions({
+      forward: data.meaningful_thing || "",
+      obstacle: data.obstacle || "",
+      tomorrow: data.tomorrow_focus || "",
+    });
+
+    setScreenTime(
+      data.distraction_time || ""
+    );
+
+    setEnergy(
+      data.energy_level || 5
+    );
+
+    setReward(
+      data.reward || ""
+    );
+
+    const {
+      data: taskData,
+      error: taskError,
+    } = await supabase
+      .from("tasks")
+      .select("*")
+      .eq("journal_id", data.id);
+
+    if (!taskError && taskData) {
+      setTasks(
+        taskData.map((task) => ({
+          id: task.id,
+          text: task.task_name,
+          time: task.time_spent,
+          completed: task.completed,
+        }))
+      );
+    }
+  };
+
+  const handleReview = async () => {
+    await handleSaveJournal();
+
+    alert("AI Review integration coming next");
   };
 
   const [screenTime, setScreenTime] = useState("");
@@ -73,6 +166,9 @@ function Home() {
   });
 
   const [reward, setReward] = useState("");
+
+  const [savedJournalId, setSavedJournalId] =
+    useState(null);
 
   const [tasks, setTasks] = useState([
     {
@@ -94,6 +190,10 @@ function Home() {
       completed: false,
     },
   ]);
+
+  useEffect(() => {
+    loadTodayJournal();
+  }, []);
 
   return (
     <div className="home">
@@ -148,12 +248,21 @@ function Home() {
               />
             </div>
 
-            <button
-              className="review-btn"
-              onClick={handleReview}
-            >
-              Get AI Review →
-            </button>
+            <div className="action-buttons">
+              <button
+                className="save-btn"
+                onClick={handleSaveJournal}
+              >
+                Save Journal
+              </button>
+
+              <button
+                className="review-btn"
+                onClick={handleReview}
+              >
+                Get AI Review →
+              </button>
+            </div>
           </div>
         </div>
       </div>
