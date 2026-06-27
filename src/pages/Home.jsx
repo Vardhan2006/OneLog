@@ -10,6 +10,7 @@ import Reward from "../components/journal/Reward";
 import StreakCard from "../components/dashboard/StreakCard";
 import ConsistencyChart from "../components/dashboard/ConsistencyChart";
 import HoursChart from "../components/dashboard/HoursChart";
+import AIReviewPanel from "../components/review/AIReviewPanel";
 
 function Home() {
 
@@ -149,11 +150,13 @@ function Home() {
     }
   };
 
-  const handleReview = async () => {
-    await handleSaveJournal();
+  const handleReview =
+    async () => {
 
-    alert("AI Review integration coming next");
-  };
+      await handleSaveJournal();
+
+      setShowReview(true);
+    };
 
   const [screenTime, setScreenTime] = useState("");
 
@@ -190,6 +193,37 @@ function Home() {
       completed: false,
     },
   ]);
+
+  const [showReview,
+    setShowReview] =
+    useState(false);
+
+  const [review,
+    setReview] =
+    useState({
+      disciplineScore: 78,
+      tasksCompleted: "3/5",
+      yesterdayPromise:
+        "❌ React Authentication",
+
+      patternObserved:
+        "Less productive after 7 PM",
+
+      avoidanceDetection:
+        "DSA postponed for 6 days",
+
+      trendVsLastWeek:
+        "+18% productive hours",
+
+      prediction:
+        "Likely to postpone DSA",
+
+      riskAlert:
+        "Screen time increasing",
+
+      coachVerdict:
+        "Start tomorrow with DSA."
+    });
 
   useEffect(() => {
     loadTodayJournal();
@@ -262,6 +296,14 @@ function Home() {
               >
                 Get AI Review →
               </button>
+
+              <AIReviewPanel
+                open={showReview}
+                review={review}
+                onClose={() =>
+                  setShowReview(false)
+                }
+              />
             </div>
           </div>
         </div>

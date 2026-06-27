@@ -106,6 +106,7 @@ body {
 .journal-panel {
   width: 70%;
   height: 100vh;
+  position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -397,4 +398,97 @@ body {
 
 .save-btn:hover {
   background: #ede9e2;
+}
+
+.review-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -100%;
+  width: auto;
+  height: 40%;
+  max-height: 500px;
+
+  background: #f6f4f0;
+
+  border-top:
+    1px solid #d8d1c8;
+
+  transition:
+    bottom .3s ease;
+
+  z-index: 1000;
+
+  padding: 20px;
+
+  overflow-y: auto;
+}
+
+.review-panel.open {
+  bottom: 0;
+}
+
+.review-handle {
+  width: 60px;
+  height: 5px;
+
+  background: #bbb;
+
+  border-radius: 20px;
+
+  margin: 0 auto 20px;
+}
+
+.review-header {
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items: center;
+
+  margin-bottom: 20px;
+}
+
+.review-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap: 20px;
+}
+
+.review-card {
+  border:
+    1px solid #ddd8ce;
+
+  padding: 15px;
+
+  background: #faf8f4;
+}
+
+.review-card.full {
+  grid-column: span 3;
+}
+
+.review-card h3 {
+  font-size: .8rem;
+
+  text-transform:
+    uppercase;
+
+  color: #7b6a58;
+
+  margin-bottom: 10px;
+}
+
+.close-review {
+  border: none;
+
+  background: none;
+
+  font-size: 1.5rem;
+
+  cursor: pointer;
 }
