@@ -194,15 +194,14 @@ function Home() {
     },
   ]);
 
-  const [showReview,
-    setShowReview] =
+  const [showReview, setShowReview] =
     useState(false);
 
-  const [review,
-    setReview] =
+  const [review, setReview] =
     useState({
       disciplineScore: 78,
       tasksCompleted: "3/5",
+
       yesterdayPromise:
         "❌ React Authentication",
 
@@ -224,6 +223,62 @@ function Home() {
       coachVerdict:
         "Start tomorrow with DSA."
     });
+
+  const [reviewHeight,
+    setReviewHeight] =
+    useState(250);
+
+  const startResize = () => {
+
+    const move = (e) => {
+
+      const journal =
+        document.querySelector(
+          ".journal-panel"
+        );
+
+      if (!journal) return;
+
+      const rect =
+        journal.getBoundingClientRect();
+
+      const height =
+        rect.bottom - e.clientY;
+
+      if (
+        height >= 200 &&
+        height <= rect.height - 20
+      ) {
+        setReviewHeight(height);
+      }
+    };
+
+    const stop = () => {
+      document.removeEventListener(
+        "mousemove",
+        move
+      );
+
+      document.removeEventListener(
+        "mouseup",
+        stop
+      );
+    };
+
+    document.addEventListener(
+      "mousemove",
+      move
+    );
+
+    document.addEventListener(
+      "mouseup",
+      stop
+    );
+  };
+
+  const [isDragging,
+    setIsDragging] =
+    useState(false);
 
   useEffect(() => {
     loadTodayJournal();
@@ -296,20 +351,23 @@ function Home() {
               >
                 Get AI Review →
               </button>
-
-              <AIReviewPanel
-                open={showReview}
-                review={review}
-                onClose={() =>
-                  setShowReview(false)
-                }
-              />
             </div>
+
+            <AIReviewPanel
+              open={showReview}
+              review={review}
+              height={reviewHeight}
+              isDragging={isDragging}
+              startResize={startResize}
+              onClose={() =>
+                setShowReview(false)
+              }
+            />
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Home;
