@@ -1,6 +1,7 @@
 import "../styles/Home.css";
 import { useState, useEffect } from "react";
 
+
 import { supabase } from "../services/supabase";
 import TaskList from "../components/journal/TaskList";
 import JournalForm from "../components/journal/JournalForm";
@@ -11,6 +12,7 @@ import StreakCard from "../components/dashboard/StreakCard";
 import ConsistencyChart from "../components/dashboard/ConsistencyChart";
 import HoursChart from "../components/dashboard/HoursChart";
 import AIReviewPanel from "../components/review/AIReviewPanel";
+import { buildPrompt } from "../services/aiReview";
 
 function Home() {
 
@@ -75,6 +77,16 @@ function Home() {
       }
     }
 
+    console.log(
+      "savedJournalId:",
+      savedJournalId
+    );
+
+    console.log(
+      "journalId:",
+      journalId
+    );
+
     const taskRows = tasks.map((task) => ({
       journal_id: journalId,
       task_name: task.text,
@@ -93,6 +105,8 @@ function Home() {
     }
 
     alert("Journal saved!");
+
+    return journalId;
   };
 
   const loadTodayJournal = async () => {
@@ -153,7 +167,81 @@ function Home() {
   const handleReview =
     async () => {
 
-      await handleSaveJournal();
+      const { data: history } =
+        await supabase
+          .from("journals")
+          .select(`
+      id,
+      journal_date,
+      meaningful_thing,
+      obstacle,
+      tomorrow_focus,
+      distraction_time,
+      energy_level,
+      reward,
+      discipline_score,
+      tasks_completed,
+      yesterday_promise,
+      pattern_observed,
+      avoidance_detection,
+      trend_vs_last_week,
+      prediction,
+      risk_alert,
+      coach_verdict
+    `)
+          .order(
+            "journal_date",
+            { ascending: false }
+          )
+          .limit(7);
+
+      const { data: taskHistory } =
+        await supabase
+          .from("tasks")
+          .select("*");
+
+      const memory =
+        history.map((journal) => ({
+          ...journal,
+
+          tasks:
+            taskHistory.filter(
+              (task) =>
+                task.journal_id === journal.id
+            ),
+        }));
+
+      console.log(
+        JSON.stringify(
+          memory,
+          null,
+          2
+        )
+      );
+
+      const currentJournal = {
+        tasks,
+        questions,
+        screenTime,
+        energy,
+        reward,
+      };
+
+      const prompt =
+        buildPrompt(
+          currentJournal,
+          history
+        );
+
+      console.log(memory);
+
+      const currentJournalId =
+        await handleSaveJournal();
+
+      console.log(
+        "saved journal:",
+        currentJournalId
+      );
 
       setShowReview(true);
     };
