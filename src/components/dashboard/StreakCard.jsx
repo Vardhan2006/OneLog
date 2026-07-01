@@ -1,8 +1,15 @@
 function StreakCard({ title, value }) {
   return (
     <div className="stat">
-      <h3>{title}</h3>
-      <p>{value}</p>
+
+      <div className="stat-left">
+        <h3>{title}</h3>
+      </div>
+
+      <div className="stat-right">
+        {value}
+      </div>
+
     </div>
   );
 }

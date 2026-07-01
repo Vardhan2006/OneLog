@@ -379,12 +379,12 @@ function Home() {
         <div className="stat-section">
           <StreakCard
             title="Current Streak"
-            value="17 Days"
+            value="17"
           />
 
           <StreakCard
             title="Longest Streak"
-            value="25 Days"
+            value="25"
           />
         </div>
 

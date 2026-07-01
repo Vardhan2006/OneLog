@@ -1,7 +1,7 @@
 function HoursChart() {
   return (
     <div className="graph-card">
-      <h3>Weekly Distraction Time</h3>
+      <h3>Distraction Time</h3>
 
       <div className="graph-placeholder">
         Distraction Time — last 7 days
